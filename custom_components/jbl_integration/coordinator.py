@@ -530,8 +530,12 @@ class Coordinator(DataUpdateCoordinator):
 
                         self._rendering_control_sid = response.headers.get("SID")
                         if self._rendering_control_sid and self._rendering_control_renew_task is None:
-                            self._rendering_control_renew_task = self.hass.async_create_task(
-                                self._async_renew_rendering_control_events()
+                            self._rendering_control_renew_task = (
+                                self._entry.async_create_background_task(
+                                    self.hass,
+                                    self._async_renew_rendering_control_events(),
+                                    name=f"{DOMAIN} rendering control renew {self.address}",
+                                )
                             )
                         _LOGGER.debug(
                             "Subscribed RenderingControl events for %s: %s via %s",
