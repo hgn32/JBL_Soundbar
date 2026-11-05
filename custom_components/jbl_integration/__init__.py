@@ -14,6 +14,7 @@ from homeassistant.const import CONF_HOST, CONF_NAME, CONF_PORT, CONF_UUID, CONF
 
 # Define the configuration schema for your integration
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
+PLATFORMS = ["sensor", "switch", "number", "button", "binary_sensor", "select"]
 _LOGGER = logging.getLogger(__name__)
 
 async def _handle_rendering_control_notify(request):
@@ -59,7 +60,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     hass.data[DOMAIN][entry.entry_id] = {"coordinator": coordinator}
     await coordinator.async_start_rendering_control_events()
 
-    await hass.config_entries.async_forward_entry_setups(entry, ["sensor", "switch","number","button","binary_sensor","select"])
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
 
     return True
@@ -101,12 +102,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
     coordinator = hass.data[DOMAIN][entry.entry_id]["coordinator"]
     await coordinator.async_stop_rendering_control_events()
 
-    await hass.config_entries.async_forward_entry_unload(entry, "switch")
-    await hass.config_entries.async_forward_entry_unload(entry, "sensor")
-    await hass.config_entries.async_forward_entry_unload(entry, "number")
-    await hass.config_entries.async_forward_entry_unload(entry, "button")
-    await hass.config_entries.async_forward_entry_unload(entry, "binary_sensor")
-    await hass.config_entries.async_forward_entry_unload(entry, "select")
-
-    hass.data[DOMAIN].pop(entry.entry_id)
-    return True
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    if unload_ok:
+        hass.data[DOMAIN].pop(entry.entry_id)
+    return unload_ok

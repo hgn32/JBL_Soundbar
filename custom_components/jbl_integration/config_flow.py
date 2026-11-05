@@ -21,7 +21,6 @@ _LOGGER = logging.getLogger(__name__)
 class JBLConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Config flow for JBL Integration."""
     VERSION = 2
-    CONNECTION_CLASS = config_entries.CONN_CLASS_LOCAL_POLL
 
     def __init__(self) -> None:
         """Initialize the config flow."""

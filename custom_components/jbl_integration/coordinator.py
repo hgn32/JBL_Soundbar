@@ -38,6 +38,7 @@ class Coordinator(DataUpdateCoordinator):
             super().__init__(
                 hass,
                 _LOGGER,
+                config_entry=entry,
                 name="JBL Sensor",
                 update_method=self._async_update_data,
                 update_interval=timedelta(seconds=int(scan_interval)),

@@ -1,5 +1,4 @@
 """Switch platform for JBL integration."""
-import async_timeout
 import logging
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
