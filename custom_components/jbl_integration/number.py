@@ -4,7 +4,6 @@ import logging
 from homeassistant.components.number import NumberEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.event import async_track_state_change
 
 from .const import DOMAIN
 from .coordinator import Coordinator
